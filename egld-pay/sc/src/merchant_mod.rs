@@ -5,7 +5,7 @@ use crate::storage_mod;
 #[elrond_wasm_derive::module]
 pub trait MerchantModule: storage_mod::StorageModule {
     #[view(getMerchantAddress)]
-    fn get_merchant_address(&self, merchant_id: &BigUint) -> SCResult<Address> {
+    fn get_merchant_address(&self, merchant_id: &BigUint) -> SCResult<ManagedAddress> {
         let merchant_mapper = self.merchants(merchant_id);
 
         require!(!merchant_mapper.is_empty(), "Merchant not found");
@@ -17,7 +17,7 @@ pub trait MerchantModule: storage_mod::StorageModule {
         self.merchant_count().set(&BigUint::zero());
     }
 
-    fn create_merchant(self, address: &Address) {
+    fn create_merchant(self, address: &ManagedAddress) {
         let merchant_id = self.reserve_merchant_id();
 
         self.merchants(&merchant_id).set(address);

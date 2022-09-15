@@ -1,4 +1,5 @@
 elrond_wasm::imports!();
+elrond_wasm::derive_imports!();
 
 use crate::storage_mod;
 
@@ -18,7 +19,7 @@ pub trait PaymentModule: storage_mod::StorageModule {
 
         require!(!merchant_mapper.is_empty(), "Merchant not found");
 
-        let merchant_address = merchant_mapper.get().managed_into();
+        let merchant_address = &(merchant_mapper.get());
 
         let service_fee = self.service_fee().get();
 

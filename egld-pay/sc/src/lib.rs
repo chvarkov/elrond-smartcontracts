@@ -1,6 +1,8 @@
 #![no_std]
+#![feature(array_methods)]
 
 elrond_wasm::imports!();
+elrond_wasm::derive_imports!();
 
 mod merchant_mod;
 mod payment_mod;
@@ -23,12 +25,12 @@ pub trait EgldPay:
 		self.init_payment_module(&150u16);
 
 		// for debug
-		self.register_merchant();
+		// self.register_merchant();
 	}
 
 	#[endpoint(registerMerchant)]
 	fn register_merchant(&self) -> SCResult<()> {
-		let caller = &self.blockchain().get_caller().to_address();
+		let caller = &self.blockchain().get_caller();
 
 		self.create_merchant(&caller);
 		
@@ -40,7 +42,7 @@ pub trait EgldPay:
 	fn claim_service_reward(&self) -> SCResult<()> {
 		let available_amount = self
 			.blockchain()
-			.get_sc_balance(&self.types().token_identifier_egld(), 0);
+			.get_sc_balance(&TokenIdentifier::egld(), 0);
 
 		self.send()
 			.direct_egld(&self.blockchain().get_owner_address(), &available_amount, &[]);
