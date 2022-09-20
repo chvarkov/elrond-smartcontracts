@@ -2,27 +2,36 @@
 
 Just playing with elrond smart contracts
 
-## Egld pay
+### Smart contracts list
+* adder
+* egld-pay
 
 ### Build
 
 ```shell
-$ bash ./egld-pay/cmd/build.sh
+$ bash <SMART_CONTRACT_NAME>/build.sh
 ```
 
 ### Test
 ```shell
-$ cd ./egld-pay/sc && cargo test
+$ cd ./<SMART_CONTRACT_NAME>/sc && cargo test
 ```
 
 ### Generate new wallet
 
 ```shell
-$ bash ./egld-pay/wallets/new.sh <WALLET_NAME>
+$ bash ./wallets/new.sh <WALLET_NAME>
 ```
 
 ### Deploy testnet
+Generate `root` wallet.
 
 ```shell
-$ bash ./egld-pay/cmd/deploy.sh
+$ bash ./wallets/new.sh root
+```
+
+Use faucet to get xEGLD.
+
+```shell
+$ bash ./<SMART_CONTRACT_NAME>/deploy.sh
 ```
