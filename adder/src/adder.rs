@@ -11,8 +11,8 @@ pub trait Adder {
     fn sum(&self) -> SingleValueMapper<BigUint>;
 
     #[init]
-    fn init(&self, initial_value: BigUint) {
-        self.sum().set(initial_value);
+    fn init(&self) {
+        self.sum().set(BigUint::zero());
     }
 
     /// Add desired amount to the storage variable.
