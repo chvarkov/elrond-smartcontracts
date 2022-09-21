@@ -48,7 +48,9 @@ pub trait LoanDataContract {
     fn loans(&self, id: &BigUint) -> SingleValueMapper<LoanInfo<Self::Api>>;
 
     #[init]
-    fn init(&self) {}
+    fn init(&self) {
+        self.index().set(&BigUint::zero());
+    }
 
     #[view(getById)]
     fn get_by_id(&self,
@@ -60,40 +62,40 @@ pub trait LoanDataContract {
         Ok(loan_mapper.get())
     }
 
-    // #[view(getList)]
-    // fn get_list(&self,
-    //             page: u64,
-    //             size: u16) -> SCResult<MultiValueManagedVec<Self::Api, LoanShortInfo<Self::Api>>> {
-    //     require!(page > 0, "Page must be greater than 0");
-    //     require!(size >= 10 && size <= 50, "Size must be greater than 10 and less than 50");
-    //
-    //     let offset: u64 = page - 1u64;
-    //
-    //     let mut list: MultiValueManagedVec<Self::Api, LoanShortInfo<Self::Api>> = MultiValueManagedVec::new();
-    //
-    //     for position in 1..size {
-    //         let id: BigUint = BigUint::from(offset.clone()) + BigUint::from(position as u32);
-    //
-    //         let loan_mapper = self.loans(&id);
-    //
-    //         if loan_mapper.is_empty() {
-    //             break;
-    //         }
-    //
-    //         let unwrapped = loan_mapper.get();
-    //
-    //         let short: LoanShortInfo<Self::Api> = LoanShortInfo {
-    //             id: unwrapped.id,
-    //             token: unwrapped.token,
-    //             amount: unwrapped.amount,
-    //             loaner_address: unwrapped.loaner_address,
-    //         };
-    //
-    //         list.push(short);
-    //     }
-    //
-    //     Ok(list)
-    // }
+    #[view(getList)]
+    fn get_list(&self,
+                page: u64,
+                size: u16) -> SCResult<MultiValueManagedVec<Self::Api, LoanShortInfo<Self::Api>>> {
+        require!(page > 0, "Page must be greater than 0");
+        require!(size >= 10 && size <= 50, "Size must be greater than 10 and less than 50");
+
+        let offset: u64 = page - 1u64;
+
+        let mut list: MultiValueManagedVec<Self::Api, LoanShortInfo<Self::Api>> = MultiValueManagedVec::new();
+
+        for position in 1..size {
+            let id: BigUint = BigUint::from(offset.clone()) + BigUint::from(position as u32);
+
+            let loan_mapper = self.loans(&id);
+
+            if loan_mapper.is_empty() {
+                break;
+            }
+
+            let unwrapped = loan_mapper.get();
+
+            let short: LoanShortInfo<Self::Api> = LoanShortInfo {
+                id: unwrapped.id,
+                token: unwrapped.token,
+                amount: unwrapped.amount,
+                loaner_address: unwrapped.loaner_address,
+            };
+
+            list.push(short);
+        }
+
+        Ok(list)
+    }
 
     #[endpoint(create)]
     fn create(&self, data: LoanCreateOptions<Self::Api>) -> SCResult<LoanInfo<Self::Api>> {

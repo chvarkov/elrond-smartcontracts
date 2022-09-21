@@ -10,6 +10,7 @@ elrond_wasm_node::wasm_endpoints! {
         create
         createByArgs
         getById
+        getList
         updateStatus
     )
 }
