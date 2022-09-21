@@ -5,6 +5,7 @@ Just playing with elrond smart contracts
 ### Smart contracts list
 * adder
 * egld-pay
+* loan-data
 
 ### Build
 
