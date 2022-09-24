@@ -11,6 +11,9 @@ elrond_wasm_node::wasm_endpoints! {
         createByArgs
         getById
         getList
+        setArrayOfAddresses
+        setArrayOfBigInt
+        setArrayOfStruct
         updateStatus
     )
 }

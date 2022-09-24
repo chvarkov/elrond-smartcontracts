@@ -39,6 +39,12 @@ pub struct LoanCreateOptions<M: ManagedTypeApi> {
     pub note: BoxedBytes,
 }
 
+#[derive(ManagedVecItem, NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi)]
+pub struct Item<M: ManagedTypeApi> {
+    pub amount: BigUint<M>,
+    pub address: ManagedAddress<M>,
+}
+
 #[elrond_wasm::contract]
 pub trait LoanDataContract {
     #[storage_mapper("index")]
@@ -149,6 +155,24 @@ pub trait LoanDataContract {
         self.loans(&loan.id).set(&loan);
 
         Ok(loan.status)
+    }
+
+    #[endpoint(setArrayOfStruct)]
+    fn set_array_of_struct(&self, list: MultiValueManagedVec<Self::Api, Item<Self::Api>>) -> SCResult<()> {
+
+        Ok(())
+    }
+
+    #[endpoint(setArrayOfAddresses)]
+    fn set_array_of_addresses(&self, list: MultiValueManagedVec<Self::Api, ManagedAddress<Self::Api>>) -> SCResult<()> {
+
+        Ok(())
+    }
+
+    #[endpoint(setArrayOfBigInt)]
+    fn set_array_of_big_int(&self, list: MultiValueManagedVec<Self::Api, BigInt>) -> SCResult<()> {
+
+        Ok(())
     }
 
     fn increment_index(&self) -> BigUint {
